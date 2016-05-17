@@ -95,7 +95,7 @@ for i = 1: repeat_times
         theta{l} = theta{l}*theta{l}';
         
     end
-    
+    score = zeros(1,iter);
 % Update Hc and Hs according to the updating rules.
     for j  = 1: iter
 
@@ -111,21 +111,21 @@ for i = 1: repeat_times
         
         H_c = 0.5*H_c_old + 0.5*H_c_old.*((Wc)./(theta{1}*H_c_old + theta{2}*H_c_old + lambda*H_c_old + eps));
 
-       score = - sum(sum(theta{1}.*Data_set{1}.network.*log([H_c H_s{1}]*[H_c H_s{1}]' + eps))) + sum(sum(theta{1}.*([H_c H_s{1}]*[H_c H_s{1}]')))  - sum(sum(theta{2}.*Data_set{2}.network.*log([H_c H_s{2}]*[H_c H_s{2}]' + eps))) + sum(sum(theta{2}.*([H_c H_s{2}]*[H_c H_s{2}]'))) + lambda*sum(sum(H_c.*H_c)) + lambda*sum(sum( H_s{1}.*H_s{1})) + lambda*sum(sum( H_s{2}.*H_s{2}));
+       score(j) = - sum(sum(theta{1}.*Data_set{1}.network.*log([H_c H_s{1}]*[H_c H_s{1}]' + eps))) + sum(sum(theta{1}.*([H_c H_s{1}]*[H_c H_s{1}]')))  - sum(sum(theta{2}.*Data_set{2}.network.*log([H_c H_s{2}]*[H_c H_s{2}]' + eps))) + sum(sum(theta{2}.*([H_c H_s{2}]*[H_c H_s{2}]'))) + lambda*sum(sum(H_c.*H_c)) + lambda*sum(sum( H_s{1}.*H_s{1})) + lambda*sum(sum( H_s{2}.*H_s{2}));
         
-        if abs(score - lowest_score) < rho
+        if abs(score(j) - lowest_score)/abs(lowest_score) < rho
             break;
         else        
             H_c_old = H_c;
             H_s_old = H_s;
-            lowest_score = score;
+            lowest_score = score(j);
         end
     end
     
-        if score < final_score
+        if score(j) < final_score
         final_H_c = H_c;
         final_H_s = H_s;
-        final_score = score;
+        final_score = score(j);
         end
 end
 
@@ -140,7 +140,7 @@ for l = 1 : L
     H_star = [H_star, final_H_s{l}];
 end
 
-
+save score2 score
     H_star(H_star < 10^(-3)) = 0;
     [H_sort,~] = sort(H_star,2,'descend');
     dif_H = H_sort(:,1:(size(H_sort,2) - 1)) - H_sort(:,2:size(H_sort,2));
