@@ -39,7 +39,7 @@ if nargin < 6
 end
 
 if nargin < 5
-    repeat_times = 10;
+    repeat_times = 20;
 end
 
 if nargin < 4
