@@ -1,9 +1,9 @@
 function [H_star, H_c_star, H_s_star, final_H_c, final_H_s] = PSMVC(Data_set, K, lambda, eta, repeat_times, iter, rho)
 
 % Estimating model parameters Hc and Hs by updating them
-% according to Equations (3), and (4) alternately. It repeats the entire
+% according to Equations (4), and (5) alternately. It repeats the entire
 % updating procedure multiple times and chooses the result that gives
-% the lowest value of objective function in Equation (2) as the final estimator.
+% the lowest value of objective function in Equation (3) as the final estimator.
 
 
 % Input:
@@ -15,7 +15,7 @@ function [H_star, H_c_star, H_s_star, final_H_c, final_H_s] = PSMVC(Data_set, K,
 %   default value is 2^2;
 %   eta: the common factor ratio. The default value is 0.5;
 %   repeat_times: the number of times that we repeat the entire calculation
-%   to avoid local minimum. The default value is 10;
+%   to avoid local minimum. The default value is 20;
 %   iter: the number of iterations limited in PSMVC. The default value is
 %   200;
 %   rho: the tolerance threshold of the stop criterion. The default value is 1e-6.
